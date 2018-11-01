@@ -1,13 +1,13 @@
-local N = assert(
+local PRIME_COUNT = assert(
     os.getenv("PRIME_COUNT"),
-    "Please specify how many primes you want to get."
+    "Please set PRIME_COUNT environment variable."
 )
-N = tonumber(N)
+PRIME_COUNT = tonumber(PRIME_COUNT)
 
 local primes = {}
-local function is_prime(num)
-    for _, p in ipairs(primes) do
-        if num % p == 0 then
+local function is_prime(number)
+    for _, prime in ipairs(primes) do
+        if number % prime == 0 then
             return false
         end
     end
@@ -15,16 +15,16 @@ local function is_prime(num)
 end
 
 print("begin")
-local i = 1
+local number = 2
 while true do
-    i = i + 1
-    if is_prime(i) then
-        print(i)
-        table.insert(primes, i)
-        if #primes == N then
+    if is_prime(number) then
+        print(number)
+        table.insert(primes, number)
+        if #primes == PRIME_COUNT then
             break
         end
     end
+    number = number + 1
 end
 
 print("end")
