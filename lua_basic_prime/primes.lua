@@ -14,6 +14,7 @@ local function is_prime(num)
     return true
 end
 
+print("begin")
 local i = 1
 while true do
     i = i + 1
@@ -26,3 +27,4 @@ while true do
 end
 
 print(table.concat(primes, "\n"))
+print("end")
