@@ -1,7 +1,8 @@
 local N = assert(
-    os.getenv("PRIME_LIMIT"),
-    "Please specify how many numbers you want to check."
+    os.getenv("PRIME_COUNT"),
+    "Please specify how many primes you want to get."
 )
+N = tonumber(N)
 
 local primes = {}
 local function is_prime(num)
@@ -13,9 +14,14 @@ local function is_prime(num)
     return true
 end
 
-for i = 2, N-1 do
+local i = 1
+while true do
+    i = i + 1
     if is_prime(i) then
         table.insert(primes, i)
+        if #primes == N then
+            break
+        end
     end
 end
 
