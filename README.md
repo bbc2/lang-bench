@@ -1,3 +1,3 @@
 # Language Benchmark
 
-/!\ Hazardous material /!\
+⚠️ Hazardous material ⚠️
