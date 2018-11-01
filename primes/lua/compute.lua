@@ -19,6 +19,7 @@ local i = 1
 while true do
     i = i + 1
     if is_prime(i) then
+        print(i)
         table.insert(primes, i)
         if #primes == N then
             break
@@ -26,5 +27,4 @@ while true do
     end
 end
 
-print(table.concat(primes, "\n"))
 print("end")
