@@ -15,6 +15,8 @@ local function is_prime(number)
 end
 
 print("begin")
+io.stdout:flush()
+
 local number = 2
 while true do
     if is_prime(number) then
@@ -28,3 +30,4 @@ while true do
 end
 
 print("end")
+io.stdout:flush()
