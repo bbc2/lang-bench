@@ -1,0 +1,10 @@
+ARG VERSION
+ARG DISTRIBUTION
+FROM golang:${VERSION}-${DISTRIBUTION}
+
+WORKDIR /app
+COPY . /app
+
+RUN go build -o exe
+
+ENTRYPOINT ./exe
