@@ -1,0 +1,14 @@
+(executable
+    (name cli)
+    (public_name lang-bench)
+    (libraries
+        bench_lib
+        lwt.unix
+    )
+    (preprocess
+        (pps
+            lwt_ppx
+            ppx_deriving_yojson
+        )
+    )
+)
