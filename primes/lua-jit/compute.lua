@@ -17,13 +17,10 @@ end
 print("begin")
 io.stdout:flush()
 local number = 2
-while true do
+while #primes < PRIME_COUNT do
     if is_prime(number) then
         print(number)
         table.insert(primes, number)
-        if #primes == PRIME_COUNT then
-            break
-        end
     end
     number = number + 1
 end
