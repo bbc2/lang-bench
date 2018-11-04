@@ -1,0 +1,19 @@
+(library
+    (name bench_lib)
+    (public_name lang-bench)
+    (libraries
+        ANSITerminal
+        containers
+        lwt.unix
+        ppx_deriving.runtime
+        ppx_deriving_yojson.runtime
+        yojson
+    )
+    (preprocess
+        (pps
+            lwt_ppx
+            ppx_deriving.std
+            ppx_deriving_yojson
+        )
+    )
+)

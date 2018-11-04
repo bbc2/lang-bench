@@ -1,0 +1,16 @@
+(tests
+    (names
+        docker
+        timing
+    )
+    (libraries
+        alcotest
+        bench_lib
+        ppx_deriving.runtime
+    )
+    (preprocess
+        (pps
+            ppx_deriving.std
+        )
+    )
+)

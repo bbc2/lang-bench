@@ -1,0 +1,26 @@
+opam-version: "2.0"
+version: "dev"
+maintainer: "Lang-Bench Team"
+authors: "Lang-Bench Team"
+homepage: "https://github.com/bbc2/lang-bench"
+bug-reports: "https://github.com/bbc2/lang-bench/issues"
+description: "Programming Language Benchmarks"
+synopsis: "Programming Language Benchmarks"
+depends: [
+    "alcotest" {with-test}
+    "ANSITerminal"
+    "containers"
+    "dune" {build}
+    "lwt"
+    "lwt_ppx"
+    "odoc" {with-test}
+    "ppx_deriving"
+    "ppx_deriving_yojson"
+    "yojson"
+]
+build: [
+    ["dune" "build" "-p" name "-j" jobs]
+]
+build-test: [
+    ["dune" "runtest" "-p" name "-j" jobs]
+]

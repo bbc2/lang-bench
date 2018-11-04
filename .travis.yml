@@ -1,0 +1,7 @@
+language: c
+sudo: false
+services:
+  - docker
+script:
+  - docker build --file ci/Dockerfile --tag ci .
+  - docker run ci opam exec -- env TERM=dumb make
