@@ -3,6 +3,7 @@ local PRIME_COUNT = assert(
     "Please set PRIME_COUNT environment variable."
 )
 PRIME_COUNT = tonumber(PRIME_COUNT)
+local BENCH_DEBUG = os.getenv("BENCH_DEBUG")
 
 local primes = {}
 local function is_prime(number)
@@ -20,10 +21,13 @@ io.stdout:flush()
 local number = 2
 while #primes < PRIME_COUNT do
     if is_prime(number) then
-        print(number)
         table.insert(primes, number)
     end
     number = number + 1
+end
+
+if BENCH_DEBUG == "true" then
+    print(table.concat(primes, "\n"))
 end
 
 print("end")
