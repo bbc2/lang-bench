@@ -41,7 +41,7 @@ module Languages = struct
     ; commands =
         { build =
             Docker.Build
-              { file = "primes/bash/Dockerfilesdfsij"
+              { file = "primes/bash/Dockerfile"
               ; tag
               ; path = "primes/bash"
               ; build_args = []
