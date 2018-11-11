@@ -3,6 +3,7 @@ if(isNaN(PRIME_COUNT)) {
     console.log("Please set PRIME_COUNT environment variable.");
     process.exit(-1);
 }
+const BENCH_DEBUG = process.env.BENCH_DEBUG;
 
 const primes = [];
 function is_prime(n) {
@@ -19,10 +20,16 @@ process.stdout.write("begin\n", function() {
     let result = "";
     while(primes.length < PRIME_COUNT) {
         if(is_prime(number)) {
-            process.stdout.write(number+"\n");
             primes.push(number);
         }
         number++;
+    }
+    if(BENCH_DEBUG === "true") {
+        var primes_str = "";
+        for(var i = 0; i < primes.length; i++) {
+            primes_str += primes[i]+"\n";
+        }
+        console.log(primes_str.slice(0, -1));
     }
     process.stdout.write("end\n", function() {
         process.exit(0);

@@ -25,12 +25,17 @@ impl PrimeSeeker {
         let mut number = self.current_number;
         while self.primes.len() < prime_count {
             if self.is_prime(number) {
-                println!("{}", number);
                 self.primes.push(number);
             }
             number += 1;
         }
         self.current_number = number;
+    }
+
+    fn print_primes(&self) {
+        for prime in self.primes.iter() {
+            println!("{}", prime);
+        }
     }
 }
 
@@ -39,9 +44,19 @@ fn main() {
         Ok(val) => val.parse::<usize>().unwrap(),
         Err(e) => panic!("Please set the PRIME_COUNT environment variable.\n{:?}", e),
     };
+    let bench_debug = match std::env::var("BENCH_DEBUG") {
+        Ok(val) => val == "true",
+        Err(_) => false,
+    };
+
     println!("begin");
     io::stdout().flush().expect("Flush failed");
-    PrimeSeeker::new().seek_up_to(prime_count);
+    let mut prime_seeker = PrimeSeeker::new();
+    prime_seeker.seek_up_to(prime_count);
+
+    if bench_debug {
+        prime_seeker.print_primes();
+    }
     println!("end");
     io::stdout().flush().expect("Flush failed");
 }

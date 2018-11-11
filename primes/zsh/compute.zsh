@@ -18,9 +18,12 @@ number=2
 echo begin
 while [[ $#primes -lt $PRIME_COUNT ]]; do
     if is_prime $number; then
-        echo $number
         primes+=($number)
     fi
     number=$((number + 1))
 done
+
+if [[ $BENCH_DEBUG == "true" && $#primes -gt 0 ]]; then
+    printf '%s\n' "${primes[@]}"
+fi
 echo end
