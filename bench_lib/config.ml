@@ -1,7 +1,5 @@
 let tag = "lang-bench"
 
-let prime_count = ("PRIME_COUNT", "10")
-
 let runs_per_benchmark = 3
 
 module Alpine = struct
@@ -11,7 +9,7 @@ end
 
 module Debian = struct
   type t =
-    | Stretch
+    | Bookworm
 end
 
 module Distribution = struct
@@ -27,14 +25,14 @@ module Distribution = struct
   let version distribution =
     match distribution with
     | Alpine V_3_8 -> "3.8"
-    | Debian Stretch -> "stretch"
+    | Debian Bookworm -> "bookworm"
 
   let tag distribution =
     Printf.sprintf "%s-%s" (name distribution) (version distribution)
 end
 
 module Languages = struct
-  let bash =
+  let bash ~env =
     { Benchmark.properties =
         [ ("language", "bash")
         ]
@@ -47,14 +45,11 @@ module Languages = struct
               ; build_args = []
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 
-  let go ~version ~distribution =
+  let go ~env ~version ~distribution =
     { Benchmark.properties =
         [ ("language", "go")
         ; ("distribution", Distribution.version distribution)
@@ -72,14 +67,11 @@ module Languages = struct
                   ]
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 
-  let lua ~version ~distribution =
+  let lua ~env ~version ~distribution =
     { Benchmark.properties =
         [ ("language", "lua")
         ; ("version", version)
@@ -100,14 +92,11 @@ module Languages = struct
                   ]
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 
-  let luajit ~version ~distribution =
+  let luajit ~env ~version ~distribution =
     { Benchmark.properties =
         [ ("language", "luajit")
         ; ("version", version)
@@ -128,14 +117,11 @@ module Languages = struct
                   ]
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 
-  let nodejs ~version ~distribution =
+  let nodejs ~env ~version ~distribution =
     { Benchmark.properties =
         [ ("language", "nodejs")
         ; ("version", version)
@@ -153,14 +139,11 @@ module Languages = struct
                   ]
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 
-  let ruby ~version ~distribution =
+  let ruby ~env ~version ~distribution =
     { Benchmark.properties =
         [ ("language", "ruby")
         ; ("distribution", Distribution.version distribution)
@@ -178,14 +161,11 @@ module Languages = struct
                   ]
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 
-  let ocaml =
+  let ocaml ~env =
     { Benchmark.properties =
         [ ("language", "ocaml")
         ; ("version", "4.07.0")
@@ -199,14 +179,11 @@ module Languages = struct
               ; build_args = []
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 
-  let zsh =
+  let zsh ~env =
     { Benchmark.properties =
         [ ("language", "zsh")
         ]
@@ -219,14 +196,11 @@ module Languages = struct
               ; build_args = []
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 
-  let rust ~version ~debug =
+  let rust ~env ~version ~debug =
     { Benchmark.properties =
         [ ("language", "rust")
         ; ("debug", debug)
@@ -244,24 +218,34 @@ module Languages = struct
                   ]
               }
         ; run =
-            Docker.Run
-              { tag
-              ; env = [prime_count]
-              }
+            Docker.Run {tag; env}
         }
     }
 end
 
-let benchmarks =
-  [ Languages.bash
-  ; Languages.go ~version:"1.11.2" ~distribution:(Debian Stretch)
-  ; Languages.lua ~version:"5.3" ~distribution:(Debian Stretch)
-  ; Languages.lua ~version:"5.3" ~distribution:(Alpine V_3_8)
-  ; Languages.luajit ~version:"5.3" ~distribution:(Debian Stretch)
-  ; Languages.luajit ~version:"5.3" ~distribution:(Alpine V_3_8)
-  ; Languages.nodejs ~version:"8.12.0" ~distribution:(Debian Stretch)
-  ; Languages.ruby ~version:"2.5.3" ~distribution:(Debian Stretch)
-  ; Languages.rust ~version:"1.30.0" ~debug:"false"
-  ; Languages.ocaml
-  ; Languages.zsh
+module Parameters = struct
+  type t =
+    { prime_count : int
+    ; debug : bool
+    }
+
+  let to_docker_env parameters =
+    [ ("PRIME_COUNT", string_of_int parameters.prime_count)
+    ; ("BENCH_DEBUG", if parameters.debug then "true" else "false")
+    ]
+end
+
+let benchmarks ~parameters =
+  let env = Parameters.to_docker_env parameters in
+  [ Languages.bash ~env
+  ; Languages.go ~env ~version:"1.22" ~distribution:(Debian Bookworm)
+  ; Languages.lua ~env ~version:"5.3" ~distribution:(Debian Bookworm)
+  ; Languages.lua ~env ~version:"5.3" ~distribution:(Alpine V_3_8)
+  ; Languages.luajit ~env ~version:"5.3" ~distribution:(Debian Bookworm)
+  ; Languages.luajit ~env ~version:"5.3" ~distribution:(Alpine V_3_8)
+  ; Languages.nodejs ~env ~version:"20.15.1" ~distribution:(Debian Bookworm)
+  ; Languages.ruby ~env ~version:"3.3.4" ~distribution:(Debian Bookworm)
+  ; Languages.rust ~env ~version:"1.30.0" ~debug:"false"
+  ; Languages.ocaml ~env
+  ; Languages.zsh ~env
   ]

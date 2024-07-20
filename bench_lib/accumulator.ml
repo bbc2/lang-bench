@@ -4,8 +4,19 @@ type ('input, 'acc, 'result) t =
   ; finalize : 'acc -> 'result
   }
 
-let empty =
+let void =
   { init = ()
   ; fold = (fun _input acc -> acc)
   ; finalize = (fun acc -> acc)
+  }
+
+let cat =
+  { init = []
+  ; fold = CCList.cons
+  ; finalize =
+      ( fun acc ->
+          acc
+          |> CCList.rev
+          |> CCString.concat "\n"
+      )
   }
