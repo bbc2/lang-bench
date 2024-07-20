@@ -3,11 +3,14 @@
     (public_name lang-bench)
     (libraries
         bench_lib
+        cmdliner
+        ppx_deriving.runtime
         lwt.unix
     )
     (preprocess
         (pps
             lwt_ppx
+            ppx_deriving.std
             ppx_deriving_yojson
         )
     )

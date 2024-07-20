@@ -11,5 +11,5 @@ type t = Benchmark.t list
 [@@deriving eq,ord,show]
 (** Output type for benchmarks.  Use [to_yojson] to get JSON. *)
 
-val to_yojson : t -> Yojson.Safe.json
+val to_yojson : t -> Yojson.Safe.t
 (** Output JSON of benchmarks. *)

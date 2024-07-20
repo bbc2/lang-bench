@@ -8,5 +8,8 @@ type ('input, 'acc, 'result) t =
     [init] is supposed to be the initial state and [finalize] should be used on the
     ['acc] value after the fold was done. *)
 
-val empty : ('input, unit, unit) t
+val void : ('input, unit, unit) t
 (** Accumulator that accepts any input and doesn't do anything with it. *)
+
+val cat : (string, string list, string) t
+(** Accumulator that returns the concatenation of input strings. *)
